@@ -1,4 +1,7 @@
+import { BigNumber } from "ethers";
+
 export const ZERO_BI = BigInt(0);
+export const ZERO_BN = BigNumber.from(0);
 export const ONE_BI = BigInt(1);
 export const TWO_BI = BigInt("2");
 export const ZERO_BD = 0;

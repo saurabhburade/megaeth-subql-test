@@ -33,6 +33,7 @@ import { createPoolDatasource } from "../types";
 import assert from "assert";
 import { EthereumBlock } from "@subql/types-ethereum";
 import { BigNumber } from "ethers";
+import { handlePoolDataCreation } from "../entities/poolData";
 
 export async function handlePoolCreated(event: PoolCreatedEvent) {
   assert(event.args);
@@ -196,14 +197,13 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
       });
 
       entity.save();
-      // handlePoolDataCreation(
-      //   event,
-      //   poolData,
-      //   poolConfig,
-      //   orderbookRes,
-      //   loantoken,
-      //   collateralToken
-      // );
+      handlePoolDataCreation(
+        event,
+        poolCompleteData,
+        orderbookRes,
+        loantoken,
+        collateralToken
+      );
     }
   }
 }
