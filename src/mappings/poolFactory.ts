@@ -25,6 +25,7 @@ import {
   ONE_BI,
   ZERO_BD,
   ZERO_BI,
+  ZERO_BN,
 } from "../utils/constants";
 // import { handleTokenPrice } from "./entities/token";
 // import { handlePoolDayData } from "./intervals/poolDayDatas";
@@ -230,32 +231,31 @@ export async function handleBlockForPools(block: EthereumBlock) {
         const poolEntry = pools[index];
         const completePooldataRes = completePoolsDatas[index];
 
-        logger.info("POOL FOUND AT INDEX :: {} POOL :: {}", [
-          index.toString(),
-          poolEntry.id.toString(),
-        ]);
+        logger.info(
+          `POOL FOUND AT INDEX :: ${index.toString()} POOL :: ${poolEntry.id.toString()}`
+        );
         // Process each pool here
 
-        const ir = completePooldataRes.interestRate || ZERO_BI;
-        const ltv = completePooldataRes.ltv || ZERO_BI;
-        const depositApy = completePooldataRes.apy || ZERO_BI;
+        const ir = completePooldataRes.interestRate || ZERO_BN;
+        const ltv = completePooldataRes.ltv || ZERO_BN;
+        const depositApy = completePooldataRes.apy || ZERO_BN;
         const poolDataStats = completePooldataRes.poolData;
-        const totalSupplyAssets = poolDataStats.totalSupplyAssets || ZERO_BI;
-        const totalSupplyShares = poolDataStats.totalSupplyShares || ZERO_BI;
-        const totalBorrowAssets = poolDataStats.totalBorrowAssets || ZERO_BI;
-        const totalBorrowShares = poolDataStats.totalBorrowShares || ZERO_BI;
+        const totalSupplyAssets = poolDataStats.totalSupplyAssets || ZERO_BN;
+        const totalSupplyShares = poolDataStats.totalSupplyShares || ZERO_BN;
+        const totalBorrowAssets = poolDataStats.totalBorrowAssets || ZERO_BN;
+        const totalBorrowShares = poolDataStats.totalBorrowShares || ZERO_BN;
         poolEntry.depositApy = depositApy.toBigInt();
 
-        const lastUpdate = poolDataStats.lastUpdate || ZERO_BI;
+        const lastUpdate = poolDataStats.lastUpdate || ZERO_BN;
         const fee = ZERO_BI;
         let assetsMultiplier = ONE_BD;
         let borrowMultiplier = ZERO_BD;
 
-        if (poolEntry) {
+        if (completePooldataRes[2].loanToken) {
           const loanToken = await Token.get(completePooldataRes[2].loanToken);
           if (loanToken) {
             assetsMultiplier = BigNumber.from(totalSupplyAssets.add(ONE_BI))
-              .div(BigNumber.from(totalSupplyShares).and(ONE_BD))
+              .div(BigNumber.from(totalSupplyShares).add(ONE_BD))
               .toNumber();
 
             borrowMultiplier =
