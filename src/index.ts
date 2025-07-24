@@ -1,2 +1,3 @@
 //Exports all handler functions
-export * from "./orderbookFactory";
+export * from "./mappings/orderbookFactory";
+export * from "./mappings/orderbook";

@@ -92,7 +92,74 @@ const project: EthereumProject = {
       ]),
       mapping: {
         file: "./dist/index.js",
-        handlers: [],
+        handlers: [
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleBorrowOrderCancelled",
+            filter: {
+              topics: ["BorrowOrderCanceled(address,uint256,uint256,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleBorrowOrderPlaced",
+            filter: {
+              topics: [
+                "BorrowOrderPlaced(address,uint256,uint256,uint256,uint256)",
+              ],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleOrderCanceled",
+            filter: {
+              topics: ["OrderCanceled(bool,address,uint256,uint256,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleOrderInserted",
+            filter: {
+              topics: ["OrderInserted(bool,address,uint256,uint256,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleOrderMatched",
+            filter: {
+              topics: ["OrderMatched(address,address,uint256,uint256,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleOwnershipTransferStarted",
+            filter: {
+              topics: ["OwnershipTransferStarted(address,address)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleOwnershipTransferred",
+            filter: {
+              topics: ["OwnershipTransferred(address,address)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handlePaused",
+            filter: { topics: ["Paused(address)"] },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleUnpaused",
+            filter: { topics: ["Unpaused(address)"] },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handlePoolWhitelisted",
+            filter: { topics: ["PoolWhitelisted(address)"] },
+          },
+        ],
       },
     },
   ],

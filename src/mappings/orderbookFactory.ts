@@ -1,13 +1,13 @@
 import assert from "assert";
-import { createOrderbookDatasource, OrderbookCreated, Token } from "./types";
-import { OrderbookCreatedLog } from "./types/abi-interfaces/OrderbookFactory";
+import { createOrderbookDatasource, OrderbookCreated, Token } from "../types";
+import { OrderbookCreatedLog } from "../types/abi-interfaces/OrderbookFactory";
 import {
   ERC20Fetcher__factory,
   Orderbook__factory,
-} from "./types/contracts/factories";
-import { OrderbookCreatedEvent } from "./types/contracts/OrderbookFactory";
+} from "../types/contracts/factories";
+import { OrderbookCreatedEvent } from "../types/contracts/OrderbookFactory";
 
-import { MULTICALL_ERC20, ZERO_BD } from "./utils/constants";
+import { MULTICALL_ERC20, ZERO_BD } from "../utils/constants";
 
 export async function handleOrderbookCreated(event: OrderbookCreatedLog) {
   assert(event.args);
