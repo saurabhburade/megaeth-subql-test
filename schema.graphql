@@ -1,0 +1,703 @@
+type BorrowOrderCancelled @entity {
+  id: ID!
+  borrower: String!
+  rate: BigInt!
+  ltv: BigInt!
+  amount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type BorrowOrderPlaced @entity {
+  id: ID!
+  borrower: String!
+  rate: BigInt!
+  ltv: BigInt!
+  amount: BigInt!
+  minAmountExpected: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type OrderCanceled @entity {
+  id: ID!
+  isLender: Boolean!
+  maker: String!
+  rate: BigInt!
+  ltv: BigInt!
+  amount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type OrderInserted @entity {
+  id: ID!
+  isLender: Boolean!
+  maker: String!
+  rate: BigInt!
+  ltv: BigInt!
+  amount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type OrderMatched @entity {
+  id: ID!
+  lender: String!
+  borrower: String!
+  rate: BigInt!
+  ltv: BigInt!
+  amount: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type OwnershipTransferStarted @entity {
+  id: ID!
+  previousOwner: String!
+  newOwner: String!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type OwnershipTransferred @entity {
+  id: ID!
+  previousOwner: String!
+  newOwner: String!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type Paused @entity {
+  id: ID!
+  account: String!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type PoolCreated @entity {
+  id: ID!
+  Orderbook_id: String!
+  PoolAddress: String!
+  params_loanToken: String!
+  params_collateralToken: String!
+  params_oracle: String!
+  params_irm: String!
+  params_lltv: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type PoolManagerSet @entity {
+  id: ID!
+  manager: String!
+  status: Boolean!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type Unpaused @entity {
+  id: ID!
+  account: String!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type AccrueInterest @entity {
+  id: ID!
+  Pool_id: String!
+  prevBorrowRate: BigInt!
+  interest: BigInt!
+  feeShares: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type Approval @entity {
+  id: ID!
+  owner: String!
+  spender: String!
+  value: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type Borrow @entity {
+  id: ID!
+  Pool_id: String!
+  caller: String!
+  onBehalf: String!
+  receiver: String!
+  assets: BigInt!
+  shares: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type Deposit @entity {
+  id: ID!
+  Pool_id: String!
+  caller: String!
+  assets: BigInt!
+  shares: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+  isVault: Boolean
+}
+
+type Deposit1 @entity {
+  id: ID!
+  sender: String!
+  owner: String!
+  assets: BigInt!
+  shares: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type FlashLoan @entity {
+  id: ID!
+  caller: String!
+  token: String!
+  assets: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type Liquidate @entity {
+  id: ID!
+  Pool_id: String!
+  caller: String!
+  borrower: String!
+  repaidAssets: BigInt!
+  repaidShares: BigInt!
+  seizedAssets: BigInt!
+  badDebtAssets: BigInt!
+  badDebtShares: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type Repay @entity {
+  id: ID!
+  Pool_id: String!
+  caller: String!
+  onBehalf: String!
+  assets: BigInt!
+  shares: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type SetAuthorization @entity {
+  id: ID!
+  caller: String!
+  authorizer: String!
+  authorized: String!
+  newIsAuthorized: Boolean!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type SupplyCollateral @entity {
+  id: ID!
+  Pool_id: String!
+  caller: String!
+  onBehalf: String!
+  assets: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type Transfer @entity {
+  id: ID!
+  from: String!
+  to: String!
+  value: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type Withdraw @entity {
+  id: ID!
+  Pool_id: String!
+  caller: String!
+  receiver: String!
+  assets: BigInt!
+  shares: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+  isVault: Boolean
+}
+
+type Withdraw1 @entity {
+  id: ID!
+  sender: String!
+  receiver: String!
+  owner: String!
+  assets: BigInt!
+  shares: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type WithdrawCollateral @entity {
+  id: ID!
+  Pool_id: String!
+  caller: String!
+  onBehalf: String!
+  receiver: String!
+  assets: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+enum ActionType {
+  DEPOSIT
+  WITHDRAW
+  TRANSFER
+  ADD_COLLATERAL
+  REPAY
+  REMOVE_COLLATERAL
+  BORROW
+  CREATE_ORDER
+  CANCEL_ORDER
+  LIQUIDATE
+}
+
+type PoolAction @entity {
+  id: ID!
+  poolAddress: String!
+  pool: PoolDataEntity!
+  caller: String!
+  user: UserDataEntity!
+  receiver: String!
+  assets: BigInt!
+  shares: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+  action: ActionType!
+  token: Token
+  isVault: Boolean
+}
+
+type UserAction @entity {
+  id: ID!
+  poolAddress: String
+  vaultAddress: String
+  pool: PoolDataEntity
+  vault: VaultDataEntity
+  caller: String!
+  user: UserDataEntity!
+  receiver: String!
+  assets: BigInt!
+  shares: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+  action: ActionType!
+  token: Token
+  isVault: Boolean
+}
+
+type OrderbookCreated @entity {
+  id: ID!
+  loanToken: String!
+  collateralToken: String!
+  orderbook: String!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type ValueUpdate @entity {
+  id: ID!
+  value: BigInt!
+  dataFeedId: String!
+  updatedAt: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type Token @entity {
+  id: ID!
+  name: String!
+  symbol: String!
+  decimals: BigInt!
+  rate: Float!
+  dataFeedId: String
+  updatedAt: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+  address: String!
+  tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
+  tokenHourData: [TokenHourData!]! @derivedFrom(field: "token")
+}
+
+type TokenHourData @entity {
+  id: ID!
+  token: Token
+  rate: Float!
+  updatedAt: BigInt!
+  prevHourData: TokenHourData
+  hourId: BigInt!
+}
+
+type TokenDayData @entity {
+  id: ID!
+  token: Token
+  rate: Float!
+  updatedAt: BigInt!
+  prevDayData: TokenDayData
+  dayId: BigInt!
+}
+
+type PoolEventArgs @entity {
+  id: ID!
+  account: String!
+  depositAmount: BigInt!
+  withdrawAmount: BigInt!
+  borrowAmount: BigInt!
+  repayAmount: BigInt!
+  depositShares: BigInt!
+  withdrawShares: BigInt!
+  borrowShares: BigInt!
+  repayShares: BigInt!
+  addcollateral: BigInt!
+  removecollateral: BigInt!
+}
+
+type PoolDataEntity @entity {
+  id: ID!
+  totalSupplyAssets: BigInt!
+  totalSupplyShares: BigInt!
+  totalBorrowAssets: BigInt!
+  totalBorrowShares: BigInt!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  fee: BigInt!
+  utilization: Float!
+  ir: BigInt!
+  depositApy: BigInt!
+  ltv: BigInt!
+  convertToAssetsMultiplier: Float!
+  convertBorrowAssetsMultiplier: Float!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalBorrowVolume: BigInt!
+  totalRepayVolume: BigInt!
+  poolDayData: [PoolDataDayEntity!]! @derivedFrom(field: "pool")
+  poolHourData: [PoolDataHourEntity!]! @derivedFrom(field: "pool")
+  loanToken: Token
+  collateralToken: Token
+  orderbook: OrderbookCreated
+  oracle: String!
+  isWhitelisted: Boolean
+  poolFactory: PoolFactory!
+}
+
+type PoolDataHourEntity @entity {
+  id: ID!
+  totalSupplyAssets: BigInt!
+  totalSupplyShares: BigInt!
+  totalBorrowAssets: BigInt!
+  totalBorrowShares: BigInt!
+  lastUpdate: BigInt!
+  fee: BigInt!
+  utilization: Float!
+  ir: BigInt!
+  depositApy: BigInt!
+  ltv: BigInt!
+  convertToAssetsMultiplier: Float!
+  convertBorrowAssetsMultiplier: Float!
+  timestamp: BigInt!
+  lastupdate: BigInt!
+  poolAddress: String!
+  prevHourData: PoolDataHourEntity
+  hourId: BigInt!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalBorrowVolume: BigInt!
+  totalRepayVolume: BigInt!
+  pool: PoolDataEntity
+  collateralTokenHourData: TokenHourData
+  loanTokenHourData: TokenHourData
+}
+
+type PoolDataDayEntity @entity {
+  id: ID!
+  totalSupplyAssets: BigInt!
+  totalSupplyShares: BigInt!
+  totalBorrowAssets: BigInt!
+  totalBorrowShares: BigInt!
+  lastUpdate: BigInt!
+  fee: BigInt!
+  utilization: Float!
+  ir: BigInt!
+  depositApy: BigInt!
+  ltv: BigInt!
+  convertToAssetsMultiplier: Float!
+  convertBorrowAssetsMultiplier: Float!
+  timestamp: BigInt!
+  lastupdate: BigInt!
+  poolAddress: String!
+  prevDayData: PoolDataDayEntity
+  dayId: BigInt!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalBorrowVolume: BigInt!
+  totalRepayVolume: BigInt!
+  pool: PoolDataEntity
+  collateralTokenDayData: TokenDayData
+  loanTokenDayData: TokenDayData
+}
+
+type UserDataEntity @entity {
+  id: ID!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalBorrowVolume: BigInt!
+  totalRepayVolume: BigInt!
+  totalSupplyCollateralVolume: BigInt!
+  totalWithdrawCollateralVolume: BigInt!
+  pools: [UserDataPoolEntity!]! @derivedFrom(field: "user")
+  vaults: [UserDataVaultEntity!]! @derivedFrom(field: "user")
+  userHourData: [UserDataHourEntity!]! @derivedFrom(field: "user")
+  userDayData: [UserDataDayEntity!]! @derivedFrom(field: "user")
+}
+
+type UserDataHourEntity @entity {
+  id: ID!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalBorrowVolume: BigInt!
+  totalRepayVolume: BigInt!
+  totalSupplyCollateralVolume: BigInt!
+  totalWithdrawCollateralVolume: BigInt!
+  user: UserDataEntity
+  hourId: BigInt!
+  prev: UserDataHourEntity
+}
+
+type UserDataDayEntity @entity {
+  id: ID!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalBorrowVolume: BigInt!
+  totalRepayVolume: BigInt!
+  totalSupplyCollateralVolume: BigInt!
+  totalWithdrawCollateralVolume: BigInt!
+  user: UserDataEntity
+  dayId: BigInt!
+  prev: UserDataDayEntity
+}
+
+type UserDataPoolEntity @entity {
+  id: ID!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalBorrowVolume: BigInt!
+  totalRepayVolume: BigInt!
+  totalSupplyCollateralVolume: BigInt!
+  totalWithdrawCollateralVolume: BigInt!
+  depositedAssets: Float!
+  depositedShares: BigInt!
+  borrowedAssets: Float!
+  borrowedShares: BigInt!
+  collateralAssets: Float!
+  user: UserDataEntity
+  pool: PoolDataEntity
+  userPoolDayData: [UserDataPoolDayEntity!]! @derivedFrom(field: "userDataPool")
+  userPoolHourData: [UserDataPoolHourEntity!]! @derivedFrom(field: "userDataPool")
+}
+
+type UserDataPoolHourEntity @entity {
+  id: ID!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalBorrowVolume: BigInt!
+  totalRepayVolume: BigInt!
+  totalSupplyCollateralVolume: BigInt!
+  totalWithdrawCollateralVolume: BigInt!
+  user: UserDataEntity
+  hourId: BigInt!
+  prev: UserDataPoolHourEntity
+  depositedAssets: Float!
+  depositedShares: BigInt!
+  borrowedAssets: Float!
+  borrowedShares: BigInt!
+  userDataPool: UserDataPoolEntity
+  collateralAssets: Float!
+}
+
+type UserDataPoolDayEntity @entity {
+  id: ID!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalBorrowVolume: BigInt!
+  totalRepayVolume: BigInt!
+  totalSupplyCollateralVolume: BigInt!
+  totalWithdrawCollateralVolume: BigInt!
+  user: UserDataEntity
+  dayId: BigInt!
+  prev: UserDataPoolDayEntity
+  depositedAssets: Float!
+  depositedShares: BigInt!
+  borrowedAssets: Float!
+  collateralAssets: Float!
+  borrowedShares: BigInt!
+  userDataPool: UserDataPoolEntity
+}
+
+type PoolFactory @entity {
+  id: ID!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  totalPools: BigInt!
+  totalWhitelistedPools: BigInt!
+  pools: [PoolDataEntity!]! @derivedFrom(field: "poolFactory")
+}
+
+type VaultFactory @entity {
+  id: ID!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  totalVaults: BigInt!
+  vaults: [VaultDataEntity!]! @derivedFrom(field: "vaultFactory")
+}
+
+type VaultDataEntity @entity {
+  id: ID!
+  manager: String!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  fee: BigInt!
+  depositApy: BigInt!
+  convertToAssetsMultiplier: Float!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalAssets: BigInt!
+  totalShares: BigInt!
+  token: Token
+  vaultFactory: VaultFactory!
+  vaultDayData: [VaultDataDayEntity!]! @derivedFrom(field: "vault")
+  vaultHourData: [VaultDataHourEntity!]! @derivedFrom(field: "vault")
+  name: String
+  symbol: String
+  decimals: BigInt!
+}
+
+type VaultDataDayEntity @entity {
+  id: ID!
+  dayId: BigInt!
+  timestamp: BigInt!
+  depositApy: BigInt!
+  convertToAssetsMultiplier: Float!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalAssets: BigInt!
+  totalShares: BigInt!
+  token: Token
+  vault: VaultDataEntity!
+  prevDayData: VaultDataDayEntity
+  updatedAt: BigInt!
+  tokenDayData: TokenDayData
+}
+
+type VaultDataHourEntity @entity {
+  id: ID!
+  hourId: BigInt!
+  timestamp: BigInt!
+  depositApy: BigInt!
+  convertToAssetsMultiplier: Float!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  totalAssets: BigInt!
+  totalShares: BigInt!
+  token: Token
+  vault: VaultDataEntity!
+  prevHourData: VaultDataHourEntity
+  updatedAt: BigInt!
+  tokenHourData: TokenHourData
+}
+
+type UserDataVaultEntity @entity {
+  id: ID!
+  timestamp: BigInt!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  depositedAssets: BigInt!
+  depositedShares: BigInt!
+  user: UserDataEntity
+  vault: VaultDataEntity
+  userVaultDayData: [UserDataVaultDayEntity!]! @derivedFrom(field: "userDataVault")
+  userVaultHourData: [UserDataVaultHourEntity!]! @derivedFrom(field: "userDataVault")
+}
+
+type UserDataVaultDayEntity @entity {
+  id: ID!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  user: UserDataEntity
+  dayId: BigInt!
+  prev: UserDataVaultDayEntity
+  depositedAssets: BigInt!
+  depositedShares: BigInt!
+  userDataVault: UserDataVaultEntity
+}
+
+type UserDataVaultHourEntity @entity {
+  id: ID!
+  timestamp: BigInt!
+  lastUpdate: BigInt!
+  totalDepositsVolume: BigInt!
+  totalWithdrawalsVolume: BigInt!
+  user: UserDataEntity
+  hourId: BigInt!
+  prev: UserDataVaultHourEntity
+  depositedAssets: BigInt!
+  depositedShares: BigInt!
+  userDataVault: UserDataVaultEntity
+}
