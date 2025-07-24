@@ -91,7 +91,7 @@ export async function handleOrderbookCreated(event: OrderbookCreatedLog) {
     loantoken.blockNumber = BigInt(event.block.number);
     loantoken.blockTimestamp = event.block.timestamp;
     loantoken.transactionHash = event.transaction.hash;
-    loantoken.save();
+    await loantoken.save();
   }
   let collateralToken = await Token.get(event.args!.collateralToken);
   if (!collateralToken) {
@@ -129,7 +129,7 @@ export async function handleOrderbookCreated(event: OrderbookCreatedLog) {
     collateralToken.blockNumber = BigInt(event.block.number);
     collateralToken.blockTimestamp = event.block.timestamp;
     collateralToken.transactionHash = event.transaction.hash;
-    collateralToken.save();
+    await collateralToken.save();
   }
-  entity.save();
+  await entity.save();
 }
