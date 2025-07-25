@@ -223,9 +223,92 @@ const project: EthereumProject = {
         handlers: [
           {
             kind: EthereumHandlerKind.Event,
+            handler: "handleAccrueInterest",
+            filter: {
+              topics: ["AccrueInterest(address,uint256,uint256,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleApproval",
+            filter: {
+              topics: ["Approval(address,address,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleBorrow",
+            filter: {
+              topics: [
+                "Borrow(address,address,address,address,uint256,uint256)",
+              ],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
             handler: "handleDeposit",
             filter: {
               topics: ["Deposit(address,address,uint256,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleFlashLoan",
+            filter: {
+              topics: ["FlashLoan(address,address,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleLiquidate",
+            filter: {
+              topics: [
+                "Liquidate(address,address,address,uint256,uint256,uint256,uint256,uint256)",
+              ],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleRepay",
+            filter: {
+              topics: ["Repay(address,address,address,uint256,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleSupplyCollateral",
+            filter: {
+              topics: ["DepositCollateral(address,address,address,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleTransfer",
+            filter: {
+              topics: ["Transfer(address,address,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleWithdraw",
+            filter: {
+              topics: ["Withdraw(address,address,address,uint256,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleWithdraw1",
+            filter: {
+              topics: ["Withdraw(address,address,address,uint256,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleWithdrawCollateral",
+            filter: {
+              topics: [
+                "WithdrawCollateral(address,address,address,address,uint256)",
+              ],
             },
           },
         ],
