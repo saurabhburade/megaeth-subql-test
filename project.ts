@@ -281,13 +281,13 @@ const project: EthereumProject = {
               topics: ["DepositCollateral(address,address,address,uint256)"],
             },
           },
-          // {
-          //   kind: EthereumHandlerKind.Event,
-          //   handler: "handleTransfer",
-          //   filter: {
-          //     topics: ["Transfer(address,address,uint256)"],
-          //   },
-          // },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleTransfer",
+            filter: {
+              topics: ["Transfer(address,address,uint256)"],
+            },
+          },
           // {
           //   kind: EthereumHandlerKind.Event,
           //   handler: "handleWithdraw",
