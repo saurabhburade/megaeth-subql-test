@@ -46,7 +46,7 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
       event.args.pool.toString(),
     ]);
     // track only if whitelisted
-    // await createPoolDatasource({ address: event.args.pool });
+    await createPoolDatasource({ address: event.args.pool });
   }
   if (!entity) {
     if (!poolFactory) {
@@ -217,7 +217,7 @@ export async function handleBlockForPools(block: EthereumBlock) {
       api
     );
 
-    if (poolFactory && poolFactory !== null) {
+    if (poolFactory) {
       const totalPools = poolFactory?.totalPools ?? ZERO_BI;
       const chunkSize = 10;
       for (let start = 0; start < totalPools; start += chunkSize) {
