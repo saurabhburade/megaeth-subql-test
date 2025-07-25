@@ -146,7 +146,6 @@ export async function handleBorrow(event: BorrowEvent) {
       blockNumber: BigInt(event.block.number),
       blockTimestamp: event.block.timestamp,
       transactionHash: event.transaction.hash,
-
     });
 
     const poolData = await PoolDataEntity.get(event.address);
@@ -271,7 +270,6 @@ export async function handleRepay(event: RepayEvent) {
       blockNumber: BigInt(event.block.number),
       blockTimestamp: event.block.timestamp,
       transactionHash: event.transaction.hash,
-      
     });
 
     await entity.save();
@@ -504,6 +502,7 @@ export async function handleTransfer(event: TransferEvent) {
 }
 
 export async function handleWithdraw(event: WithdrawEvent) {
+  logger.info(`HANDLE WITHDRAW :: hash::${event.transaction.hash}`);
   try {
     assert(event.args);
 
@@ -528,7 +527,7 @@ export async function handleWithdraw(event: WithdrawEvent) {
     // if (poolData && poolData.isWhitelisted) {
     //   await handlePoolDataWithdraw(event);
     // }
-    await entity.save(); 
+    await entity.save();
   } catch (error) {
     logger.error(
       `ERROR :: handleWithdraw :: ${error} :: hash::${event.transaction.hash}`

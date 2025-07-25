@@ -200,7 +200,7 @@ export async function handlePoolWhitelisted(event: PoolWhitelisted) {
   const pool = await PoolDataEntity.get(event.args.pool);
   let poolFactory = await PoolFactory.get(ONE_BI.toString());
 
-  if (pool && pool !== null) {
+  if (pool) {
     pool.isWhitelisted = true;
     pool.orderbookId = event.address;
     if (poolFactory && poolFactory !== null) {
