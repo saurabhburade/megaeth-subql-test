@@ -503,36 +503,38 @@ export async function handleTransfer(event: TransferEvent) {
 
 export async function handleWithdraw(event: WithdrawEvent) {
   logger.info(`HANDLE WITHDRAW :: hash::${event.transaction.hash}`);
-  try {
-    assert(event.args);
+  if (event?.args?.[0]?.toLowerCase() !== event?.address?.toLowerCase()) {
+    try {
+      assert(event.args);
 
-    let entity = Withdraw.create({
-      id: event.transaction.hash.concat(event.logIndex.toString()),
+      let entity = Withdraw.create({
+        id: event.transaction.hash.concat(event.logIndex.toString()),
 
-      Pool_id: event.address,
+        Pool_id: event.address,
 
-      caller: event.args.sender,
-      receiver: event.args.receiver,
+        caller: event.args.sender,
+        receiver: event.args.receiver,
 
-      assets: event.args.assets?.toBigInt(),
-      shares: event.args.shares?.toBigInt(),
+        assets: event.args.assets?.toBigInt(),
+        shares: event.args.shares?.toBigInt(),
 
-      blockNumber: BigInt(event.block.number),
-      blockTimestamp: event.block.timestamp,
-      transactionHash: event.transaction.hash,
-      isVault: false,
-    });
+        blockNumber: BigInt(event.block.number),
+        blockTimestamp: event.block.timestamp,
+        transactionHash: event.transaction.hash,
+        isVault: false,
+      });
 
-    const poolData = await PoolDataEntity.get(event.address);
-    // if (poolData && poolData.isWhitelisted) {
-    //   await handlePoolDataWithdraw(event);
-    // }
-    await entity.save();
-  } catch (error) {
-    logger.error(
-      `ERROR :: handleWithdraw :: ${error} :: hash::${event.transaction.hash}`
-    );
-    throw error;
+      const poolData = await PoolDataEntity.get(event.address);
+      // if (poolData && poolData.isWhitelisted) {
+      //   await handlePoolDataWithdraw(event);
+      // }
+      await entity.save();
+    } catch (error) {
+      logger.error(
+        `ERROR :: handleWithdraw :: ${error} :: hash::${event.transaction.hash}`
+      );
+      throw error;
+    }
   }
 }
 
