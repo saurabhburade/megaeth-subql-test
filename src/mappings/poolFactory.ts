@@ -221,7 +221,7 @@ export async function handleBlockForPools(block: EthereumBlock) {
       const totalPools = poolFactory?.totalPools ?? ZERO_BI;
       const chunkSize = 10;
       for (let start = 0; start < totalPools; start += chunkSize) {
-        const pools = await PoolDataEntity.getByFields([], {
+        const pools = await store.getByFields("PoolDataEntity", [], {
           limit: chunkSize,
           offset: start,
         });
