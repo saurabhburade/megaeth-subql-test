@@ -531,7 +531,7 @@ export async function handleWithdraw(event: WithdrawEvent) {
     await entity.save();
   } catch (error) {
     logger.error(
-      `ERROR :: handleWithdraw :: ${error} :: hash::${event.transactionHash}`
+      `ERROR :: handleWithdraw :: ${error} :: hash::${event.transaction.hash}`
     );
     throw error;
   }
