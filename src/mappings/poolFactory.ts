@@ -46,7 +46,7 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
       event.args.pool.toString(),
     ]);
     // track only if whitelisted
-    // await createPoolDatasource({ address: event.args.pool });
+    await createPoolDatasource({ address: event.args.pool });
   }
   if (!entity) {
     if (!poolFactory) {
