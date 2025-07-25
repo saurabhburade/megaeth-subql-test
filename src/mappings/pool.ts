@@ -183,10 +183,10 @@ export async function handleDeposit(event: DepositEvent) {
       transactionHash: event.transaction.hash,
     });
 
-    // const poolData = await PoolDataEntity.get(event.address);
-    // if (poolData && poolData.isWhitelisted) {
-    //   await handlePoolDataDeposit(event);
-    // }
+    const poolData = await PoolDataEntity.get(event.address);
+    if (poolData && poolData.isWhitelisted) {
+      await handlePoolDataDeposit(event);
+    }
     await entity.save();
   } catch (error) {
     logger.error(
