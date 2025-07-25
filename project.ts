@@ -95,7 +95,7 @@ const project: EthereumProject = {
             kind: EthereumHandlerKind.Block,
             handler: "handleBlockForPools",
             filter: {
-              timestamp: "*/5 * * * *",
+              modulo: 300,
             },
           },
           {

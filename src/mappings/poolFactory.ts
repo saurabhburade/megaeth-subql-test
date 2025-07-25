@@ -221,10 +221,14 @@ export async function handleBlockForPools(block: EthereumBlock) {
       const totalPools = poolFactory?.totalPools ?? ZERO_BI;
       const chunkSize = 10;
       for (let start = 0; start < totalPools; start += chunkSize) {
-        const pools = await store.getByFields("PoolDataEntity", [], {
-          limit: chunkSize,
-          offset: start,
-        });
+        const pools: PoolDataEntity[] = await store.getByFields(
+          "PoolDataEntity",
+          [],
+          {
+            limit: chunkSize,
+            offset: start,
+          }
+        );
         logger.info(
           `handleBlockForPools POOL DATA start::${start} totalPools::${totalPools} chunkSize::${chunkSize} getByFields poolsLength::${pools.length}`
         );
