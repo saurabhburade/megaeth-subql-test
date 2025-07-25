@@ -527,9 +527,9 @@ export async function handleWithdraw(event: WithdrawEvent) {
       });
 
       const poolData = await PoolDataEntity.get(event.address);
-      // if (poolData && poolData.isWhitelisted) {
-      //   await handlePoolDataWithdraw(event);
-      // }
+      if (poolData && poolData.isWhitelisted) {
+        await handlePoolDataWithdraw(event);
+      }
       await entity.save();
     } catch (error) {
       logger.error(
