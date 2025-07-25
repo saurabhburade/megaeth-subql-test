@@ -59,14 +59,14 @@ export async function handlePoolDataCreation(
   if (poolCompleteData) {
     const poolData = poolCompleteData[1];
     const poolConfig = poolCompleteData[2];
-    const ir = poolCompleteData?.interestRate || ZERO_BI;
-    const supplyAPY = poolCompleteData?.apy || ZERO_BI;
-    const ltv = poolCompleteData?.[2].lltv || ZERO_BI;
-    const totalSupplyAssets = poolData.totalSupplyAssets || ZERO_BI;
-    const totalSupplyShares = poolData.totalSupplyShares || ZERO_BI;
-    const totalBorrowAssets = poolData.totalBorrowAssets || ZERO_BI;
-    const totalBorrowShares = poolData.totalBorrowShares || ZERO_BI;
-    const lastUpdate = poolData.lastUpdate || ZERO_BI;
+    const ir = poolCompleteData?.interestRate || ZERO_BN;
+    const supplyAPY = poolCompleteData?.apy || ZERO_BN;
+    const ltv = poolCompleteData?.[2].lltv || ZERO_BN;
+    const totalSupplyAssets = poolData.totalSupplyAssets || ZERO_BN;
+    const totalSupplyShares = poolData.totalSupplyShares || ZERO_BN;
+    const totalBorrowAssets = poolData.totalBorrowAssets || ZERO_BN;
+    const totalBorrowShares = poolData.totalBorrowShares || ZERO_BN;
+    const lastUpdate = poolData.lastUpdate || ZERO_BN;
     const fee = ZERO_BI;
 
     let assetsMultiplier = ZERO_BD;
