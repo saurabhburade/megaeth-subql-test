@@ -37,6 +37,7 @@ import { BigNumber } from "ethers";
 import { handlePoolDataCreation } from "../entities/poolData";
 import { handlePoolHourData } from "../intervals/poolHourDatas";
 import { handlePoolDayData } from "../intervals/poolDayDatas";
+import { handleTokenPrice } from "../entities/token";
 
 export async function handlePoolCreated(event: PoolCreatedEvent) {
   assert(event.args);
@@ -312,24 +313,28 @@ export async function handleBlockForPools(block: EthereumBlock) {
           );
           if (poolEntry.loanTokenId) {
             const loanToken = await Token.get(poolEntry.loanTokenId);
-            if (loanToken !== null) {
+            if (loanToken) {
               const loanTokenPrice = completePooldataRes.loanPrice;
               const parsedPrice = BigNumber.from(loanTokenPrice)
                 .div(BigNumber.from(10 ** 8))
                 .toNumber();
-              // handleTokenPrice(loanToken, parsedPrice, block.timestamp);
+              await handleTokenPrice(loanToken, parsedPrice, block.timestamp);
             }
           }
           if (poolEntry.collateralTokenId) {
             const collateralToken = await Token.get(
               poolEntry.collateralTokenId!
             );
-            if (collateralToken !== null) {
+            if (collateralToken) {
               const rawPrice = completePooldataRes.collateralPrice;
               const parsedPrice = BigNumber.from(rawPrice).div(
                 BigNumber.from(10 ** 8)
               );
-              // handleTokenPrice(collateralToken, parsedPrice, block.timestamp);
+              await handleTokenPrice(
+                collateralToken,
+                parsedPrice?.toNumber(),
+                block.timestamp
+              );
             }
           }
           logger.info(
