@@ -525,10 +525,10 @@ export async function handleWithdraw(event: WithdrawEvent) {
     });
 
     const poolData = await PoolDataEntity.get(event.address);
-    if (poolData && poolData.isWhitelisted) {
-      await handlePoolDataWithdraw(event);
-    }
-    await entity.save();
+    // if (poolData && poolData.isWhitelisted) {
+    //   await handlePoolDataWithdraw(event);
+    // }
+    await entity.save(); 
   } catch (error) {
     logger.error(
       `ERROR :: handleWithdraw :: ${error} :: hash::${event.transaction.hash}`
