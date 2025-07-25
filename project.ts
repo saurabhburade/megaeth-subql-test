@@ -306,15 +306,15 @@ const project: EthereumProject = {
           //     ],
           //   },
           // },
-          // {
-          //   kind: EthereumHandlerKind.Event,
-          //   handler: "handleWithdrawCollateral",
-          //   filter: {
-          //     topics: [
-          //       "WithdrawCollateral(address,address,address,address,uint256)",
-          //     ],
-          //   },
-          // },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleWithdrawCollateral",
+            filter: {
+              topics: [
+                "WithdrawCollateral(address,address,address,address,uint256)",
+              ],
+            },
+          },
         ],
       },
     },
