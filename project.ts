@@ -251,36 +251,36 @@ const project: EthereumProject = {
               topics: ["Deposit(address,address,uint256,uint256)"],
             },
           },
-          // {
-          //   kind: EthereumHandlerKind.Event,
-          //   handler: "handleFlashLoan",
-          //   filter: {
-          //     topics: ["FlashLoan(address,address,uint256)"],
-          //   },
-          // },
-          // {
-          //   kind: EthereumHandlerKind.Event,
-          //   handler: "handleLiquidate",
-          //   filter: {
-          //     topics: [
-          //       "Liquidate(address,address,address,uint256,uint256,uint256,uint256,uint256)",
-          //     ],
-          //   },
-          // },
-          // {
-          //   kind: EthereumHandlerKind.Event,
-          //   handler: "handleRepay",
-          //   filter: {
-          //     topics: ["Repay(address,address,address,uint256,uint256)"],
-          //   },
-          // },
-          // {
-          //   kind: EthereumHandlerKind.Event,
-          //   handler: "handleSupplyCollateral",
-          //   filter: {
-          //     topics: ["DepositCollateral(address,address,address,uint256)"],
-          //   },
-          // },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleFlashLoan",
+            filter: {
+              topics: ["FlashLoan(address,address,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleLiquidate",
+            filter: {
+              topics: [
+                "Liquidate(address,address,address,uint256,uint256,uint256,uint256,uint256)",
+              ],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleRepay",
+            filter: {
+              topics: ["Repay(address,address,address,uint256,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleSupplyCollateral",
+            filter: {
+              topics: ["DepositCollateral(address,address,address,uint256)"],
+            },
+          },
           // {
           //   kind: EthereumHandlerKind.Event,
           //   handler: "handleTransfer",

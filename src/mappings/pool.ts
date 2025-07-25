@@ -146,7 +146,7 @@ export async function handleBorrow(event: BorrowEvent) {
       blockNumber: BigInt(event.block.number),
       blockTimestamp: event.block.timestamp,
       transactionHash: event.transaction.hash,
-      
+
     });
 
     const poolData = await PoolDataEntity.get(event.address);
@@ -271,6 +271,7 @@ export async function handleRepay(event: RepayEvent) {
       blockNumber: BigInt(event.block.number),
       blockTimestamp: event.block.timestamp,
       transactionHash: event.transaction.hash,
+      
     });
 
     await entity.save();
