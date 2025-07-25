@@ -220,7 +220,15 @@ const project: EthereumProject = {
       ]),
       mapping: {
         file: "./dist/index.js",
-        handlers: [],
+        handlers: [
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleDeposit",
+            filter: {
+              topics: ["Deposit(address,address,uint256,uint256)"],
+            },
+          },
+        ],
       },
     },
   ],

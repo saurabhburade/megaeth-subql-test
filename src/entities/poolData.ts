@@ -1,6 +1,6 @@
 import {
   AccrueInterestLog as AccrueInterestEvent,
-  Deposit_address_address_uint256_uint256_Log as DepositEvent,
+  DepositLog as DepositEvent,
   WithdrawLog as WithdrawEvent,
   BorrowLog as BorrowEvent,
   RepayLog as RepayEvent,
