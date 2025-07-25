@@ -35,6 +35,8 @@ import assert from "assert";
 import { EthereumBlock } from "@subql/types-ethereum";
 import { BigNumber } from "ethers";
 import { handlePoolDataCreation } from "../entities/poolData";
+import { handlePoolHourData } from "../intervals/poolHourDatas";
+import { handlePoolDayData } from "../intervals/poolDayDatas";
 
 export async function handlePoolCreated(event: PoolCreatedEvent) {
   assert(event.args);
@@ -294,8 +296,20 @@ export async function handleBlockForPools(block: EthereumBlock) {
 
           await poolEntry.save();
 
-          // handlePoolHourData(poolEntry, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
-          // handlePoolDayData(poolEntry, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
+          await handlePoolHourData(
+            poolEntry,
+            ZERO_BI,
+            ZERO_BI,
+            ZERO_BI,
+            ZERO_BI
+          );
+          await handlePoolDayData(
+            poolEntry,
+            ZERO_BI,
+            ZERO_BI,
+            ZERO_BI,
+            ZERO_BI
+          );
           if (poolEntry.loanTokenId) {
             const loanToken = await Token.get(poolEntry.loanTokenId);
             if (loanToken !== null) {

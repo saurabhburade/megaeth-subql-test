@@ -30,8 +30,8 @@ import {
 
 import { Pool } from "../types/contracts/Pool";
 
-// import { handlePoolHourData } from "../intervals/poolHourDatas";
-// import { handlePoolDayData } from "../intervals/poolDayDatas";
+import { handlePoolHourData } from "../intervals/poolHourDatas";
+import { handlePoolDayData } from "../intervals/poolDayDatas";
 // import { handleUserData, handleUserPoolData } from "./userData";
 
 // import {
@@ -158,8 +158,14 @@ export async function handlePoolDataCreation(
     poolDataObject.convertBorrowAssetsMultiplier = borrowMultiplier;
     await poolDataObject.save();
 
-    // handlePoolHourData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
-    // handlePoolDayData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
+    await handlePoolHourData(
+      poolDataObject,
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI
+    );
+    await handlePoolDayData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
   } else {
     logger.info("CALL REVERT :: PoolCreatedEvent");
   }
@@ -257,8 +263,14 @@ export async function handlePoolData(event: AccrueInterestEvent) {
     poolDataObject.convertBorrowAssetsMultiplier = borrowMultiplier;
     poolDataObject.depositApy = depositApy?.toBigInt();
     await poolDataObject.save();
-    // handlePoolHourData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
-    // handlePoolDayData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
+    await handlePoolHourData(
+      poolDataObject,
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI
+    );
+    await handlePoolDayData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
   } else {
     logger.info(
       "CALL REVERT :: FALLING BACK TO PREV DATA :: AccrueInterestEvent",
@@ -268,8 +280,20 @@ export async function handlePoolData(event: AccrueInterestEvent) {
       poolDataObject.ir = event.args!.prevBorrowRate?.toBigInt();
       poolDataObject.lastUpdate = event.block.timestamp;
       await poolDataObject.save();
-      // handlePoolHourData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
-      // handlePoolDayData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
+      await handlePoolHourData(
+        poolDataObject,
+        ZERO_BI,
+        ZERO_BI,
+        ZERO_BI,
+        ZERO_BI
+      );
+      await handlePoolDayData(
+        poolDataObject,
+        ZERO_BI,
+        ZERO_BI,
+        ZERO_BI,
+        ZERO_BI
+      );
     }
   }
 }
@@ -300,20 +324,20 @@ export async function handlePoolDataDeposit(event: DepositEvent) {
       removecollateral: ZERO_BI,
     });
 
-    // handlePoolHourData(
-    //   poolDataObject,
-    //   event.args.assets,
-    //   ZERO_BI,
-    //   ZERO_BI,
-    //   ZERO_BI
-    // );
-    // handlePoolDayData(
-    //   poolDataObject,
-    //   event.args.assets,
-    //   ZERO_BI,
-    //   ZERO_BI,
-    //   ZERO_BI
-    // );
+    await handlePoolHourData(
+      poolDataObject,
+      event.args.assets?.toBigInt(),
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI
+    );
+    await handlePoolDayData(
+      poolDataObject,
+      event.args.assets?.toBigInt(),
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI
+    );
     // USER DATA
     // handleUserData(poolDataObject, poolEventData);
 
@@ -361,20 +385,20 @@ export async function handlePoolDataWithdraw(event: WithdrawEvent) {
       removecollateral: ZERO_BI,
     });
 
-    // handlePoolHourData(
-    //   poolDataObject,
-    //   ZERO_BI,
-    //   event.args.assets,
-    //   ZERO_BI,
-    //   ZERO_BI
-    // );
-    // handlePoolDayData(
-    //   poolDataObject,
-    //   ZERO_BI,
-    //   event.args.assets,
-    //   ZERO_BI,
-    //   ZERO_BI
-    // );
+    await handlePoolHourData(
+      poolDataObject,
+      ZERO_BI,
+      event.args.assets?.toBigInt(),
+      ZERO_BI,
+      ZERO_BI
+    );
+    await handlePoolDayData(
+      poolDataObject,
+      ZERO_BI,
+      event.args.assets?.toBigInt(),
+      ZERO_BI,
+      ZERO_BI
+    );
     // USER DATA
     // handleUserData(poolDataObject, poolEventData);
 
@@ -430,20 +454,20 @@ export async function handlePoolDataBorrow(event: BorrowEvent) {
       poolEventData.addcollateral = poolPosition.collateral.toBigInt();
     }
 
-    // handlePoolHourData(
-    //   poolDataObject,
-    //   ZERO_BI,
-    //   ZERO_BI,
-    //   event.args.assets,
-    //   ZERO_BI
-    // );
-    // handlePoolDayData(
-    //   poolDataObject,
-    //   ZERO_BI,
-    //   ZERO_BI,
-    //   event.args.assets,
-    //   ZERO_BI
-    // );
+    await handlePoolHourData(
+      poolDataObject,
+      ZERO_BI,
+      ZERO_BI,
+      event.args.assets?.toBigInt(),
+      ZERO_BI
+    );
+    await handlePoolDayData(
+      poolDataObject,
+      ZERO_BI,
+      ZERO_BI,
+      event.args.assets?.toBigInt(),
+      ZERO_BI
+    );
     // USER DATA
     // handleUserData(poolDataObject, poolEventData);
 
@@ -493,20 +517,20 @@ export async function handlePoolDataRepay(event: RepayEvent) {
       removecollateral: ZERO_BI,
     });
 
-    // handlePoolHourData(
-    //   poolDataObject,
-    //   ZERO_BI,
-    //   ZERO_BI,
-    //   ZERO_BI,
-    //   event.args.assets
-    // );
-    // handlePoolDayData(
-    //   poolDataObject,
-    //   ZERO_BI,
-    //   ZERO_BI,
-    //   ZERO_BI,
-    //   event.args.assets
-    // );
+    await handlePoolHourData(
+      poolDataObject,
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI,
+      event.args.assets?.toBigInt()
+    );
+    await handlePoolDayData(
+      poolDataObject,
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI,
+      event.args.assets?.toBigInt()
+    );
     // USER DATA
     // handleUserData(poolDataObject, poolEventData);
 
@@ -564,8 +588,14 @@ export async function handlePoolDataAddCollateral(
     });
 
     // TODO: add collateral tracking on pools
-    // handlePoolHourData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
-    // handlePoolDayData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
+    await handlePoolHourData(
+      poolDataObject,
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI
+    );
+    await handlePoolDayData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
     // USER DATA
     // handleUserData(poolDataObject, poolEventData);
 
@@ -623,8 +653,14 @@ export async function handlePoolDataRemoveCollateral(
     });
 
     // TODO: add collateral tracking on pools
-    // handlePoolHourData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
-    // handlePoolDayData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
+    await handlePoolHourData(
+      poolDataObject,
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI,
+      ZERO_BI
+    );
+    await handlePoolDayData(poolDataObject, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
     // USER DATA
     // handleUserData(poolDataObject, poolEventData);
 
