@@ -166,29 +166,29 @@ export async function handleDeposit(event: DepositEvent) {
   try {
     assert(event.args);
 
-    logger.info(
-      `146 handleDeposit : TRACKING ACCOUNT : ${event.transaction.from} POOL : ${event.address} SENDER :${event.args.sender} LOGIDX:${event.logIndex} TXIDX:${event.transactionIndex}`
-    );
+    // logger.info(
+    //   `146 handleDeposit : TRACKING ACCOUNT : ${event.transaction.from} POOL : ${event.address} SENDER :${event.args.sender} LOGIDX:${event.logIndex} TXIDX:${event.transactionIndex}`
+    // );
 
-    let entity = Deposit.create({
-      id: event.transaction.hash.concat(event.logIndex.toString()),
-      Pool_id: event.address,
+    // let entity = Deposit.create({
+    //   id: event.transaction.hash.concat(event.logIndex.toString()),
+    //   Pool_id: event.address,
 
-      caller: event.args?.owner,
-      isVault: false,
-      assets: event.args.assets?.toBigInt(),
-      shares: event.args.shares?.toBigInt(),
+    //   caller: event.args?.owner,
+    //   isVault: false,
+    //   assets: event.args.assets?.toBigInt(),
+    //   shares: event.args.shares?.toBigInt(),
 
-      blockNumber: BigInt(event.block.number),
-      blockTimestamp: event.block.timestamp,
-      transactionHash: event.transaction.hash,
-    });
+    //   blockNumber: BigInt(event.block.number),
+    //   blockTimestamp: event.block.timestamp,
+    //   transactionHash: event.transaction.hash,
+    // });
 
     // const poolData = await PoolDataEntity.get(event.address);
     // if (poolData && poolData.isWhitelisted) {
     //   await handlePoolDataDeposit(event);
     // }
-    await entity.save();
+    // await entity.save();
   } catch (error) {
     logger.error(
       `ERROR :: handleDeposit :: ${error} :: hash::${event.transactionHash}`
