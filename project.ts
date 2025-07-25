@@ -221,13 +221,13 @@ const project: EthereumProject = {
       mapping: {
         file: "./dist/index.js",
         handlers: [
-          // {
-          //   kind: EthereumHandlerKind.Event,
-          //   handler: "handleAccrueInterest",
-          //   filter: {
-          //     topics: ["AccrueInterest(address,uint256,uint256,uint256)"],
-          //   },
-          // },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleAccrueInterest",
+            filter: {
+              topics: ["AccrueInterest(address,uint256,uint256,uint256)"],
+            },
+          },
           // {
           //   kind: EthereumHandlerKind.Event,
           //   handler: "handleApproval",
