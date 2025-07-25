@@ -288,13 +288,13 @@ const project: EthereumProject = {
               topics: ["Transfer(address,address,uint256)"],
             },
           },
-          // {
-          //   kind: EthereumHandlerKind.Event,
-          //   handler: "handleWithdraw",
-          //   filter: {
-          //     topics: ["Withdraw(address,address,address,uint256,uint256)"],
-          //   },
-          // },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleWithdraw",
+            filter: {
+              topics: ["Withdraw(address,address,address,uint256,uint256)"],
+            },
+          },
           // {
           //   kind: EthereumHandlerKind.Event,
           //   handler: "handleWithdraw1",
