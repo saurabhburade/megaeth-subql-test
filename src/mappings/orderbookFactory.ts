@@ -36,7 +36,7 @@ export async function handleOrderbookCreated(event: OrderbookCreatedLog) {
       event.args?.orderbook.toString(),
     ]);
     // OrderbookTemplate.create(event.args?.orderbook);
-    createOrderbookDatasource({
+    await createOrderbookDatasource({
       address: event.args?.orderbook,
     });
   }
