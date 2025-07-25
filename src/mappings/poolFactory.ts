@@ -48,8 +48,8 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
     // track only if whitelisted
     // await createPoolDatasource({ address: event.args.pool });
   }
-  if (!entity || entity == null) {
-    if (!poolFactory || poolFactory == null) {
+  if (!entity) {
+    if (!poolFactory) {
       poolFactory = PoolFactory.create({
         id: ONE_BI.toString(),
         timestamp: event.block.timestamp,
@@ -61,7 +61,7 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
 
     poolFactory.lastUpdate = event.block.timestamp;
     poolFactory.totalPools = poolFactory.totalPools + ONE_BI;
-    poolFactory.save();
+    await poolFactory.save();
     const poolAddress = event.args.pool;
     const poolContract = Pool__factory.connect(poolAddress, api);
 
@@ -117,7 +117,7 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
           loantoken.blockNumber = BigInt(event.block.number);
           loantoken.blockTimestamp = event.block.timestamp;
           loantoken.transactionHash = event.transaction.hash;
-          loantoken.save();
+          await loantoken.save();
         }
       } else {
         if (oraclePrices.loanPrice) {
@@ -127,7 +127,7 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
         loantoken.blockNumber = BigInt(event.block.number);
         loantoken.blockTimestamp = event.block.timestamp;
         loantoken.transactionHash = event.transaction.hash;
-        loantoken.save();
+        await loantoken.save();
       }
       let collateralToken = await Token.get(event.args.collateralToken);
       if (!collateralToken) {
@@ -168,7 +168,7 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
           collateralToken.blockNumber = BigInt(event.block.number);
           collateralToken.blockTimestamp = event.block.timestamp;
           collateralToken.transactionHash = event.transaction.hash;
-          collateralToken.save();
+          await collateralToken.save();
         }
       } else {
         if (!oraclePrices.collateralPrice) {
@@ -179,7 +179,7 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
         collateralToken.blockNumber = BigInt(event.block.number);
         collateralToken.blockTimestamp = event.block.timestamp;
         collateralToken.transactionHash = event.transaction.hash;
-        collateralToken.save();
+        await collateralToken.save();
       }
       logger.info("New Pool Created: {}", [event.args.pool.toString()]);
       entity = PoolCreated.create({
@@ -197,8 +197,8 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
         params_oracle: poolCompleteData[2].oracle,
       });
 
-      entity.save();
-      handlePoolDataCreation(
+      await entity.save();
+      await handlePoolDataCreation(
         event,
         poolCompleteData,
         orderbookRes,
@@ -221,14 +221,10 @@ export async function handleBlockForPools(block: EthereumBlock) {
       const totalPools = poolFactory?.totalPools ?? ZERO_BI;
       const chunkSize = 10;
       for (let start = 0; start < totalPools; start += chunkSize) {
-        const pools: PoolDataEntity[] = await store.getByFields(
-          "PoolDataEntity",
-          [],
-          {
-            limit: chunkSize,
-            offset: start,
-          }
-        );
+        const pools: PoolDataEntity[] = await PoolDataEntity.getByFields([], {
+          limit: chunkSize,
+          offset: start,
+        });
         logger.info(
           `handleBlockForPools POOL DATA start::${start} totalPools::${totalPools} chunkSize::${chunkSize} getByFields poolsLength::${pools.length}`
         );
@@ -296,7 +292,7 @@ export async function handleBlockForPools(block: EthereumBlock) {
           poolEntry.convertBorrowAssetsMultiplier = borrowMultiplier;
           poolEntry.depositApy = depositApy?.toBigInt();
 
-          poolEntry.save();
+          await poolEntry.save();
 
           // handlePoolHourData(poolEntry, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
           // handlePoolDayData(poolEntry, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
