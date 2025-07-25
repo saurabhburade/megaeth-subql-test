@@ -228,22 +228,22 @@ const project: EthereumProject = {
               topics: ["AccrueInterest(address,uint256,uint256,uint256)"],
             },
           },
-          // {
-          //   kind: EthereumHandlerKind.Event,
-          //   handler: "handleApproval",
-          //   filter: {
-          //     topics: ["Approval(address,address,uint256)"],
-          //   },
-          // },
-          // {
-          //   kind: EthereumHandlerKind.Event,
-          //   handler: "handleBorrow",
-          //   filter: {
-          //     topics: [
-          //       "Borrow(address,address,address,address,uint256,uint256)",
-          //     ],
-          //   },
-          // },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleApproval",
+            filter: {
+              topics: ["Approval(address,address,uint256)"],
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleBorrow",
+            filter: {
+              topics: [
+                "Borrow(address,address,address,address,uint256,uint256)",
+              ],
+            },
+          },
           {
             kind: EthereumHandlerKind.Event,
             handler: "handleDeposit",

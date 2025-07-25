@@ -437,7 +437,7 @@ export async function handlePoolDataBorrow(event: BorrowEvent) {
 
     const poolEventData = PoolEventArgs.create({
       id: event.address.toString(),
-      account: event.transaction.from,
+      account: event.args.receiver,
       depositAmount: ZERO_BI,
       withdrawAmount: ZERO_BI,
       borrowAmount: event.args.assets?.toBigInt(),
@@ -486,7 +486,8 @@ export async function handlePoolDataBorrow(event: BorrowEvent) {
       blockTimestamp: event.block.timestamp,
       transactionHash: event.transaction.hash,
       poolId: event.address,
-
+      vaultAddress: event.address,
+      vaultId: event.address,
       isVault: false,
       tokenId: poolDataObject.loanTokenId,
     });
