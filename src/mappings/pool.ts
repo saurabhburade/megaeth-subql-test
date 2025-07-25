@@ -503,10 +503,12 @@ export async function handleTransfer(event: TransferEvent) {
 
 export async function handleWithdraw(event: WithdrawEvent) {
   logger.info(`HANDLE WITHDRAW :: hash::${event.transaction.hash}`);
-  if (event?.args?.[0]?.toLowerCase() !== event?.address?.toLowerCase()) {
-    try {
-      assert(event.args);
+  if (
+    event.args &&  event?.args[0]?.toLowerCase() !== event?.address?.toLowerCase()
+  ) {
+  logger.info(`INSIDE WITHDRAW :: hash::${event?.args[0]?.toLowerCase()}`);
 
+    try {
       let entity = Withdraw.create({
         id: event.transaction.hash.concat(event.logIndex.toString()),
 
