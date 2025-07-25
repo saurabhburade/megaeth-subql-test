@@ -46,7 +46,7 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
       event.args.pool.toString(),
     ]);
     // track only if whitelisted
-    await createPoolDatasource({ address: event.args.pool });
+    // await createPoolDatasource({ address: event.args.pool });
   }
   if (!entity) {
     if (!poolFactory) {
@@ -331,8 +331,6 @@ export async function handleBlockForPools(block: EthereumBlock) {
       }
     } else {
       logger.error(`NO POOL FACTORY`);
-
-      throw Error("NO POOL FACTORY");
     }
   } catch (error) {
     logger.error(`handleBlockForPools ERROR ${error}`);
