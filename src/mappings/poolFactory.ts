@@ -210,118 +210,125 @@ export async function handlePoolCreated(event: PoolCreatedEvent) {
 }
 
 export async function handleBlockForPools(block: EthereumBlock) {
-  const poolFactory = await PoolFactory.get(ONE_BI.toString());
-  const multicallErc20Contract = ERC20Fetcher__factory.connect(
-    MULTICALL_ERC20,
-    api
-  );
+  try {
+    const poolFactory = await PoolFactory.get(ONE_BI.toString());
+    const multicallErc20Contract = ERC20Fetcher__factory.connect(
+      MULTICALL_ERC20,
+      api
+    );
 
-  if (poolFactory && poolFactory !== null) {
-    const totalPools = poolFactory?.totalPools ?? ZERO_BI;
-    const chunkSize = 10;
-    for (let start = 0; start < totalPools; start += chunkSize) {
-      const pools = await PoolDataEntity.getByFields([], {
-        limit: chunkSize,
-        offset: start,
-      });
-      const poolAddresses = pools?.map((p) => p.id);
-      const completePoolsDatas =
-        await multicallErc20Contract.getPoolsCompleteData(poolAddresses);
-      for (let index = 0; index < pools.length; index++) {
-        const poolEntry = pools[index];
-        const completePooldataRes = completePoolsDatas[index];
+    if (poolFactory && poolFactory !== null) {
+      const totalPools = poolFactory?.totalPools ?? ZERO_BI;
+      const chunkSize = 10;
+      for (let start = 0; start < totalPools; start += chunkSize) {
+        const pools = await PoolDataEntity.getByFields([], {
+          limit: chunkSize,
+          offset: start,
+        });
+        const poolAddresses = pools?.map((p) => p.id);
+        const completePoolsDatas =
+          await multicallErc20Contract.getPoolsCompleteData(poolAddresses);
+        for (let index = 0; index < pools.length; index++) {
+          const poolEntry = pools[index];
+          const completePooldataRes = completePoolsDatas[index];
 
-        logger.info(
-          `POOL FOUND AT INDEX :: ${index.toString()} POOL :: ${poolEntry.id.toString()}`
-        );
-        // Process each pool here
+          logger.info(
+            `POOL FOUND AT INDEX :: ${index.toString()} POOL :: ${poolEntry.id.toString()}`
+          );
+          // Process each pool here
 
-        const ir = completePooldataRes.interestRate || ZERO_BN;
-        const ltv = completePooldataRes.ltv || ZERO_BN;
-        const depositApy = completePooldataRes.apy || ZERO_BN;
-        const poolDataStats = completePooldataRes.poolData;
-        const totalSupplyAssets = poolDataStats.totalSupplyAssets || ZERO_BN;
-        const totalSupplyShares = poolDataStats.totalSupplyShares || ZERO_BN;
-        const totalBorrowAssets = poolDataStats.totalBorrowAssets || ZERO_BN;
-        const totalBorrowShares = poolDataStats.totalBorrowShares || ZERO_BN;
-        poolEntry.depositApy = depositApy.toBigInt();
+          const ir = completePooldataRes.interestRate || ZERO_BN;
+          const ltv = completePooldataRes.ltv || ZERO_BN;
+          const depositApy = completePooldataRes.apy || ZERO_BN;
+          const poolDataStats = completePooldataRes.poolData;
+          const totalSupplyAssets = poolDataStats.totalSupplyAssets || ZERO_BN;
+          const totalSupplyShares = poolDataStats.totalSupplyShares || ZERO_BN;
+          const totalBorrowAssets = poolDataStats.totalBorrowAssets || ZERO_BN;
+          const totalBorrowShares = poolDataStats.totalBorrowShares || ZERO_BN;
+          poolEntry.depositApy = depositApy.toBigInt();
 
-        const lastUpdate = poolDataStats.lastUpdate || ZERO_BN;
-        const fee = ZERO_BI;
-        let assetsMultiplier = ONE_BD;
-        let borrowMultiplier = ZERO_BD;
+          const lastUpdate = poolDataStats.lastUpdate || ZERO_BN;
+          const fee = ZERO_BI;
+          let assetsMultiplier = ONE_BD;
+          let borrowMultiplier = ZERO_BD;
 
-        if (completePooldataRes[2].loanToken) {
-          const loanToken = await Token.get(completePooldataRes[2].loanToken);
-          if (loanToken) {
-            assetsMultiplier = BigNumber.from(totalSupplyAssets.add(ONE_BI))
-              .div(BigNumber.from(totalSupplyShares).add(ONE_BD))
-              .toNumber();
+          if (completePooldataRes[2].loanToken) {
+            const loanToken = await Token.get(completePooldataRes[2].loanToken);
+            if (loanToken) {
+              assetsMultiplier = BigNumber.from(totalSupplyAssets.add(ONE_BI))
+                .div(BigNumber.from(totalSupplyShares).add(ONE_BD))
+                .toNumber();
 
-            borrowMultiplier =
-              totalBorrowAssets.gt(ZERO_BI) && totalBorrowShares.gt(ZERO_BI)
-                ? BigNumber.from(totalBorrowAssets.add(ONE_BI))
-                    .div(BigNumber.from(totalBorrowShares).add(ONE_BD))
-                    ?.toNumber()
-                : ZERO_BD;
+              borrowMultiplier =
+                totalBorrowAssets.gt(ZERO_BI) && totalBorrowShares.gt(ZERO_BI)
+                  ? BigNumber.from(totalBorrowAssets.add(ONE_BI))
+                      .div(BigNumber.from(totalBorrowShares).add(ONE_BD))
+                      ?.toNumber()
+                  : ZERO_BD;
+            }
           }
-        }
 
-        const utilization =
-          totalBorrowAssets.gt(ZERO_BI) && totalSupplyAssets.gt(ZERO_BI)
-            ? BigNumber.from(totalBorrowAssets)
-                .div(BigNumber.from(totalSupplyAssets))
-                .mul(100)
-                .toNumber()
-            : ZERO_BD;
+          const utilization =
+            totalBorrowAssets.gt(ZERO_BI) && totalSupplyAssets.gt(ZERO_BI)
+              ? BigNumber.from(totalBorrowAssets)
+                  .div(BigNumber.from(totalSupplyAssets))
+                  .mul(100)
+                  .toNumber()
+              : ZERO_BD;
 
-        poolEntry.totalSupplyAssets = totalSupplyAssets?.toBigInt();
-        poolEntry.totalSupplyShares = totalSupplyShares?.toBigInt();
-        poolEntry.totalBorrowAssets = totalBorrowAssets?.toBigInt();
-        poolEntry.totalBorrowShares = totalBorrowShares?.toBigInt();
-        poolEntry.lastUpdate = lastUpdate?.toBigInt();
-        poolEntry.fee = fee;
-        poolEntry.utilization = utilization;
-        poolEntry.ir = ir?.toBigInt();
-        poolEntry.ltv = ltv?.toBigInt();
-        poolEntry.convertToAssetsMultiplier = assetsMultiplier;
-        poolEntry.convertBorrowAssetsMultiplier = borrowMultiplier;
-        poolEntry.depositApy = depositApy?.toBigInt();
+          poolEntry.totalSupplyAssets = totalSupplyAssets?.toBigInt();
+          poolEntry.totalSupplyShares = totalSupplyShares?.toBigInt();
+          poolEntry.totalBorrowAssets = totalBorrowAssets?.toBigInt();
+          poolEntry.totalBorrowShares = totalBorrowShares?.toBigInt();
+          poolEntry.lastUpdate = lastUpdate?.toBigInt();
+          poolEntry.fee = fee;
+          poolEntry.utilization = utilization;
+          poolEntry.ir = ir?.toBigInt();
+          poolEntry.ltv = ltv?.toBigInt();
+          poolEntry.convertToAssetsMultiplier = assetsMultiplier;
+          poolEntry.convertBorrowAssetsMultiplier = borrowMultiplier;
+          poolEntry.depositApy = depositApy?.toBigInt();
 
-        poolEntry.save();
+          poolEntry.save();
 
-        // handlePoolHourData(poolEntry, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
-        // handlePoolDayData(poolEntry, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
-        if (poolEntry.loanTokenId) {
-          const loanToken = await Token.get(poolEntry.loanTokenId);
-          if (loanToken !== null) {
-            const loanTokenPrice = completePooldataRes.loanPrice;
-            const parsedPrice = BigNumber.from(loanTokenPrice)
-              .div(BigNumber.from(10 ** 8))
-              .toNumber();
-            // handleTokenPrice(loanToken, parsedPrice, block.timestamp);
+          // handlePoolHourData(poolEntry, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
+          // handlePoolDayData(poolEntry, ZERO_BI, ZERO_BI, ZERO_BI, ZERO_BI);
+          if (poolEntry.loanTokenId) {
+            const loanToken = await Token.get(poolEntry.loanTokenId);
+            if (loanToken !== null) {
+              const loanTokenPrice = completePooldataRes.loanPrice;
+              const parsedPrice = BigNumber.from(loanTokenPrice)
+                .div(BigNumber.from(10 ** 8))
+                .toNumber();
+              // handleTokenPrice(loanToken, parsedPrice, block.timestamp);
+            }
           }
-        }
-        if (poolEntry.collateralTokenId) {
-          const collateralToken = await Token.get(poolEntry.collateralTokenId!);
-          if (collateralToken !== null) {
-            const rawPrice = completePooldataRes.collateralPrice;
-            const parsedPrice = BigNumber.from(rawPrice).div(
-              BigNumber.from(10 ** 8)
+          if (poolEntry.collateralTokenId) {
+            const collateralToken = await Token.get(
+              poolEntry.collateralTokenId!
             );
-            // handleTokenPrice(collateralToken, parsedPrice, block.timestamp);
+            if (collateralToken !== null) {
+              const rawPrice = completePooldataRes.collateralPrice;
+              const parsedPrice = BigNumber.from(rawPrice).div(
+                BigNumber.from(10 ** 8)
+              );
+              // handleTokenPrice(collateralToken, parsedPrice, block.timestamp);
+            }
           }
+          logger.info(
+            "handleBlockForPools POOL DATA pool::{} ir::{} ltv::{} depositApy::{}",
+            [
+              poolEntry.id.toString(),
+              ir.toString(),
+              ltv.toString(),
+              depositApy.toString(),
+            ]
+          );
         }
-        logger.info(
-          "handleBlockForPools POOL DATA pool::{} ir::{} ltv::{} depositApy::{}",
-          [
-            poolEntry.id.toString(),
-            ir.toString(),
-            ltv.toString(),
-            depositApy.toString(),
-          ]
-        );
       }
     }
+  } catch (error) {
+    logger.error(`handleBlockForPools ERROR ${error}`);
+    throw error;
   }
 }
