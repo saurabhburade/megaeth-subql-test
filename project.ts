@@ -95,7 +95,7 @@ const project: EthereumProject = {
             kind: EthereumHandlerKind.Block,
             handler: "handleBlockForPools",
             filter: {
-              modulo: 300,
+              modulo: 1800,
             },
           },
           {
