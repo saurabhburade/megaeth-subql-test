@@ -3,7 +3,6 @@ import {
   ApprovalLog as ApprovalEvent,
   BorrowLog as BorrowEvent,
   DepositLog as DepositEvent,
-  DepositLog as Deposit1Event,
   FlashLoanLog as FlashLoanEvent,
   LiquidateLog as LiquidateEvent,
   RepayLog as RepayEvent,
