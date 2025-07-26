@@ -40,10 +40,10 @@ const project: EthereumProject = {
   dataSources: [
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 8211100,
+      startBlock: 10803000,
       options: {
         abi: "OrderbookFactory",
-        address: "0x73aC81Efc7bD273399F91Ae6Ae631e6f639c7611",
+        address: "0x80a2c002268906FEC40E6731cf33C9A9EF3e97D6",
       },
       assets: new Map([
         ["Pool", { file: "./abis/Pool.json" }],
@@ -72,10 +72,10 @@ const project: EthereumProject = {
     },
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 8211100,
+      startBlock: 10803000,
       options: {
         abi: "PoolFactory",
-        address: "0xA1725703D8800bBA8FAFA2648800BbB16EC6CF36",
+        address: "0x6fd34F78A0021F9b75ecBa672Bfd0b3475B29d5a",
       },
       assets: new Map([
         ["Pool", { file: "./abis/Pool.json" }],
@@ -95,7 +95,7 @@ const project: EthereumProject = {
             kind: EthereumHandlerKind.Block,
             handler: "handleBlockForPools",
             filter: {
-              modulo: 1800,
+              modulo: 2000,
             },
           },
           {
@@ -110,10 +110,10 @@ const project: EthereumProject = {
     },
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 8211100,
+      startBlock: 10803000,
       options: {
         abi: "VaultFactory",
-        address: "0x083376e0Ede066824A26Fff14c6a8DDa82c0BB0B",
+        address: "0x595c417199933898d6e83968F96F5FA5faa36C1f",
       },
       assets: new Map([
         ["Pool", { file: "./abis/Pool.json" }],
@@ -133,7 +133,7 @@ const project: EthereumProject = {
             kind: EthereumHandlerKind.Block,
             handler: "handleBlockForVaults",
             filter: {
-              modulo: 1800,
+              modulo: 2000,
             },
           },
           {
