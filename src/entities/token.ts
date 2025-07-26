@@ -93,6 +93,6 @@ export async function handleHourDataTokenPrice(
   token.updatedAt = BigInt(timestamp?.toString());
 
   token.rate = rate;
-  tokenIntervalData.save();
-  token.save();
+  await tokenIntervalData.save();
+  await token.save();
 }

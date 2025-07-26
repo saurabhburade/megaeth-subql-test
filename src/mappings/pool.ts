@@ -245,6 +245,38 @@ export async function handleLiquidate(event: LiquidateEvent) {
     });
 
     await entity.save();
+
+    let txn = await UserAction.get(
+      event.transaction.hash.concat(event.logIndex.toString())
+    );
+    const pool = await PoolDataEntity.get(event.address);
+
+    if (!txn && pool && pool.isWhitelisted) {
+      txn = UserAction.create({
+        id: event.transaction.hash.concat(event.logIndex.toString()),
+
+        poolAddress: event.address,
+
+        poolId: event.address,
+
+        userId: event.args.borrower,
+        caller: event.args.borrower,
+        receiver: event.args.caller,
+
+        assets: event.args.seizedAssets?.toBigInt(),
+        shares: event.args.seizedAssets?.toBigInt(),
+
+        blockNumber: BigInt(event.block.number),
+        blockTimestamp: event.block.timestamp,
+        transactionHash: event.transaction.hash,
+
+        action: ActionType.LIQUIDATE,
+        isVault: false,
+        tokenId: pool?.collateralTokenId,
+      });
+
+      await txn.save();
+    }
   } catch (error) {
     logger.error(
       `ERROR :: handleLiquidate :: ${error} :: hash::${event.transactionHash}`
@@ -504,9 +536,10 @@ export async function handleTransfer(event: TransferEvent) {
 export async function handleWithdraw(event: WithdrawEvent) {
   logger.info(`HANDLE WITHDRAW :: hash::${event.transaction.hash}`);
   if (
-    event.args &&  event?.args[0]?.toLowerCase() !== event?.address?.toLowerCase()
+    event.args &&
+    event?.args[0]?.toLowerCase() !== event?.address?.toLowerCase()
   ) {
-  logger.info(`INSIDE WITHDRAW :: hash::${event?.args[0]?.toLowerCase()}`);
+    logger.info(`INSIDE WITHDRAW :: hash::${event?.args[0]?.toLowerCase()}`);
 
     try {
       let entity = Withdraw.create({

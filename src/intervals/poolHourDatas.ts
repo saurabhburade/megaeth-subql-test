@@ -106,5 +106,5 @@ export async function handlePoolHourData(
       .concat(hourID.toString());
     poolHourDataEntity.loanTokenHourDataId = intervalEntityId;
   }
-  poolHourDataEntity.save();
+  await poolHourDataEntity.save();
 }

@@ -111,5 +111,5 @@ export async function handlePoolDayData(
       .concat(dayID.toString());
     poolDayDataEntity.loanTokenDayDataId = intervalEntityId;
   }
-  poolDayDataEntity.save();
+  await poolDayDataEntity.save();
 }
