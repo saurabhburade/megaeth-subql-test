@@ -108,6 +108,44 @@ const project: EthereumProject = {
         ],
       },
     },
+    {
+      kind: EthereumDatasourceKind.Runtime,
+      startBlock: 8211100,
+      options: {
+        abi: "VaultFactory",
+        address: "0x083376e0Ede066824A26Fff14c6a8DDa82c0BB0B",
+      },
+      assets: new Map([
+        ["Pool", { file: "./abis/Pool.json" }],
+        ["Orderbook", { file: "./abis/Orderbook.json" }],
+        ["RedStoneOracle", { file: "./abis/RedstoneWrapper.json" }],
+        ["RedstoneAdapter", { file: "./abis/RedstoneAdapter.json" }],
+        ["OrderbookFactory", { file: "./abis/OrderbookFactory.json" }],
+        ["ERC20Fetcher", { file: "./abis/ERC20Fetcher.json" }],
+        ["PoolFactory", { file: "./abis/PoolFactory.json" }],
+        ["Vault", { file: "./abis/Vault.json" }],
+        ["VaultFactory", { file: "./abis/VaultFactory.json" }],
+      ]),
+      mapping: {
+        file: "./dist/index.js",
+        handlers: [
+          {
+            kind: EthereumHandlerKind.Block,
+            handler: "handleBlockForVaults",
+            filter: {
+              modulo: 1800,
+            },
+          },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleVaultCreated",
+            filter: {
+              topics: ["VaultCreated(address,address,address)"],
+            },
+          },
+        ],
+      },
+    },
   ],
   templates: [
     {
@@ -313,6 +351,51 @@ const project: EthereumProject = {
               topics: [
                 "WithdrawCollateral(address,address,address,address,uint256)",
               ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      name: "Vault",
+      kind: EthereumDatasourceKind.Runtime,
+      options: {
+        abi: "Vault",
+      },
+
+      assets: new Map([
+        ["Pool", { file: "./abis/Pool.json" }],
+        ["Orderbook", { file: "./abis/Orderbook.json" }],
+        ["RedStoneOracle", { file: "./abis/RedstoneWrapper.json" }],
+        ["RedstoneAdapter", { file: "./abis/RedstoneAdapter.json" }],
+        ["OrderbookFactory", { file: "./abis/OrderbookFactory.json" }],
+        ["ERC20Fetcher", { file: "./abis/ERC20Fetcher.json" }],
+        ["PoolFactory", { file: "./abis/PoolFactory.json" }],
+        ["Vault", { file: "./abis/Vault.json" }],
+        ["VaultFactory", { file: "./abis/VaultFactory.json" }],
+      ]),
+      mapping: {
+        file: "./dist/index.js",
+        handlers: [
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleDepositVault",
+            filter: {
+              topics: ["Deposit(address,address,uint256,uint256)"],
+            },
+          },
+          // {
+          //   kind: EthereumHandlerKind.Event,
+          //   handler: "handleTransfer",
+          //   filter: {
+          //     topics: ["Transfer(address,address,uint256)"],
+          //   },
+          // },
+          {
+            kind: EthereumHandlerKind.Event,
+            handler: "handleWithdrawVault",
+            filter: {
+              topics: ["Withdraw(address,address,address,uint256,uint256)"],
             },
           },
         ],

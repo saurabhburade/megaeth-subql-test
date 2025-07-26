@@ -56,9 +56,15 @@ export async function handleHourDataTokenPrice(
   rate: number,
   timestamp: BigInt
 ) {
-  let hourID = BigNumber.from(timestamp).div(3600)?.toBigInt();
-
-  let pHourID = BigNumber.from(timestamp).sub(3600).div(3600)?.toBigInt();
+  let hourID = BigInt(
+    BigNumber.from(timestamp).div(3600).toNumber().toFixed(0)
+  );
+  let pHourID = BigInt(
+    BigNumber.from(BigInt(timestamp?.toString()) - BigInt(3600))
+      .div(3600)
+      .toNumber()
+      .toFixed(0)
+  );
 
   let intervalEntityId = token.id.concat("_HOUR_").concat(hourID.toString());
   let intervalEntityIdPrev = token.id
